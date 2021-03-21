@@ -1,8 +1,8 @@
 public class Printer
 {
     private static String queue = "";
-    private static int PagesCount = 0;
-    private static int DocumentsCount = 0;
+    private static int pagesCount = 0;
+    private static int documentsCount = 0;
 
     public static void main(String[] args)
     {
@@ -40,30 +40,30 @@ public class Printer
     {
         queue = queue + "\n" + name + " - " + dokuments + " шт." +
                 " - " + pages + " стр.";
-        PagesCount = PagesCount + pages;
-        DocumentsCount = DocumentsCount + dokuments;
+        pagesCount = pagesCount + pages;
+        documentsCount = documentsCount + dokuments;
     }
 
     public static void clear()
     {
         queue = "";
-        PagesCount = 0;
-        DocumentsCount = 0;
+        pagesCount = 0;
+        documentsCount = 0;
     }
 
     public static int getPagesCount()
     {
-        return PagesCount;
+        return pagesCount;
     }
 
     public static int getDocumentsCount()
     {
-        return DocumentsCount;
+        return documentsCount;
     }
 
     public static int totalPagesAndDocumentsCount()
     {
-        return PagesCount + DocumentsCount;
+        return pagesCount + documentsCount;
     }
 
     public static void print(String title)
