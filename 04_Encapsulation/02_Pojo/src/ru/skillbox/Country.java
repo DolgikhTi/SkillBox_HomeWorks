@@ -57,7 +57,7 @@ public class Country {
         this.outletToTheSea = outletToTheSea;
     }
 
-    public boolean getOutletToTheSea()
+    public boolean isOutletToTheSea()
     {
         return outletToTheSea;
     }
