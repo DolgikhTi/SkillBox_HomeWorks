@@ -47,7 +47,7 @@ public class TV {
         this.color = color;
     }
 
-    public boolean getColor()
+    public boolean isColor()
     {
         return color = color;
     }
