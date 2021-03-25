@@ -1,53 +1,71 @@
 public class Basket
 {
 
-        private static String items = "";
-        private static int totalWeight = 0;
+        private String items = "";
+        private int totalPrice = 0;
+        private int limit;
 
-        public static void main(String[] args)
+        private static int totalPriceProductAllBaskets = 0;
+        private static int totalAmountProductAllBaskets = 0;
+
+        public Basket()
         {
-            add("Колбаса",52,76, 4);
-            add("Молоко", 87, 55, 3);
-            add("Масло", 200,  120, 5);
-            print("Содержимое корзины:");
-            int totalWeight = getTotalWeight();
-            System.out.println("Общий вес товаров: " + totalWeight);
-            clear();
-            System.out.println();
-            print("Содержимое корзины:");
-            totalWeight = getTotalWeight();
-            System.out.println("Общий вес товаров: " + totalWeight);
+            items = "Список товаров:";
+            this.limit = 100000;
         }
 
-        public static void add(String name, int price)
+        public Basket(int totalPriceLimit)
         {
-            add(name, price, 1);
+            this();
+            limit = totalPriceLimit;
         }
 
-        public static void add(String name, int price, int weight)
+        public void add (String name, int price, int amount)
         {
-            add(name, weight, price, 1);
+            if (totalPrice + price >= limit)
+            {
+                return;
+            }
+            items = items + "\n" + name + " - " + price +"р." +  "-" + amount + "шт.";
+            totalPrice = totalPrice + price;
+            totalPriceProductAllBaskets = totalPriceProductAllBaskets + price;
+            totalAmountProductAllBaskets = totalAmountProductAllBaskets + amount;
         }
 
-        public static void add (String name, int price, int weight, int count)
+        public static double averagePrice()
         {
-            items = items + "\n" + name + " - " +
-                    count + "шт. - " + weight + "г. - " + price;
-            totalWeight = totalWeight + count * weight;
+            double averagePriceAllBaskets = Basket.getTotalPriceProductAllBaskets() /
+                    Basket.getTotalAmountProductAllBaskets();
+            return averagePriceAllBaskets;
         }
 
-        public static void clear()
+        public static double averagePriceBasket()
+        {
+            double averagePriceBasket = Basket.getTotalPriceProductAllBaskets() /
+                    2;
+            return averagePriceBasket;
+        }
+
+        public static int getTotalPriceProductAllBaskets()
+        {
+            return totalPriceProductAllBaskets;
+        }
+        public static int getTotalAmountProductAllBaskets()
+        {
+            return totalAmountProductAllBaskets;
+        }
+        public void clear()
         {
             items = "";
-            totalWeight = 0;
+            totalPrice = 0;
         }
 
-        public static int getTotalWeight()
+        public int getTotalPrice()
         {
-            return totalWeight;
+            return totalPrice;
         }
 
-        public static void print(String title)
+        public void print(String title)
         {
             System.out.println(title);
             if (items.isEmpty())
