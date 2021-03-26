@@ -27,9 +27,9 @@ public class Basket
                 return;
             }
             items = items + "\n" + name + " - " + price +"р." +  "-" + amount + "шт.";
-            totalPrice = totalPrice + price;
-            totalPriceProductAllBaskets = totalPriceProductAllBaskets + price;
-            totalAmountProductAllBaskets = totalAmountProductAllBaskets + amount;
+            totalPrice += price;
+            totalPriceProductAllBaskets += price;
+            totalAmountProductAllBaskets += amount;
         }
 
         public static double averagePrice()
