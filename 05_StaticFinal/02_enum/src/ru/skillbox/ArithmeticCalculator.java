@@ -2,30 +2,28 @@ package ru.skillbox;
 
 public class ArithmeticCalculator
 {
-    public static int x = 65;
-    public static int y = 23;
+    public final Operation x;
+    public final Operation y;
 
-    public ArithmeticCalculator(int x, int y)
-    {
+    public ArithmeticCalculator (Operation x, Operation y){
         this.x = x;
         this.y = y;
     }
 
-    public int getX()
+    public Operation getX()
     {
         return x;
     }
 
-    public int getY()
+    public Operation getY()
     {
-        return y;
+         return y;
     }
 
-    public static void calculate(int x, int y)
+    public Operation calculator()
     {
-        Operation operation1 = Operation.ADD;
-
-        System.out.println(operation1);
+        Operation operation = Operation.MULTIPLY;
+        System.out.println(operation.action(9, 56));
+        return operation;
     }
 }
-
