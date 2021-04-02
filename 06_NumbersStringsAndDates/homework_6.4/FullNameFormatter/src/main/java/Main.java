@@ -4,6 +4,11 @@ public class Main {
 
   public static void main(String[] args) {
 
+    for (char x = 'a'; x <= 'z'; x++)
+    {
+      System.out.println(x);
+    }
+
     Scanner scanner = new Scanner(System.in);
     while (true) {
       String input = scanner.nextLine();
