@@ -1,40 +1,39 @@
 import java.util.Scanner;
 
-public class Main
-{
+public class Main {
+    static final int BOX_IN_CONTAINER = 27;
+    static final int CONTAINER_IN_TRUCK = 12;
+    static final int BOX_IN_TRUCK = BOX_IN_CONTAINER * CONTAINER_IN_TRUCK;
 
-    public static void main(String[] args)
-    {
-        int container = 1;
-        int truck = 1;
-        int boxInCont = 27;
-        int contInTruck = 12;
+    static final String EXIT_CODE = "exit";
 
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int box = scanner.nextInt();
-        if (box > 0)
-        {
-            System.out.println("Грузовик: " + truck);
-            System.out.println("\tКонтейнер: " + container);
-            for (int i = 1; i <= box; i++) {
-                System.out.println("\t\tЯщик: " + i);
-                if (i % (contInTruck * boxInCont) == 0)
-                {
-                    truck += 1;
-                    System.out.println("Грузовик: " + truck);
-                }
-                if (i % boxInCont == 0)
-                {
-                    //container = 1; при вводе 27 коробок
-                    container += 1;
-                    System.out.println("\tКонтейнер: " + container);
-                }
+        while (scanner.hasNext()) {
+            String box = scanner.nextLine();
+            if (box.equals(EXIT_CODE)) {
+                return;
             }
-            System.out.println("Необходимо:\nгрузовиков - " + truck + " шт." + "\nконтейнеров - " + container + " шт.");
+
+            int boxCont = Integer.parseInt(box);
+
+            int containerCont = 0;
+            int truckCont = 0;
+
+            int i = 0;
+            while (i < boxCont) {
+                if (i % BOX_IN_TRUCK == 0) {
+                    System.out.println("Грузовик: " + ++truckCont);
+                }
+                if (i % BOX_IN_CONTAINER == 0) {
+                    System.out.println("\tКонтейнер: " + ++containerCont);
+                }
+                System.out.println("\t\tЯщик: " + ++i);
+            }
+
+            System.out.printf("Необходимо:%nгрузовиков - %d шт.%nконтейнеров - %d шт.%n",
+                    truckCont, containerCont);
         }
-        else
-            {
-            System.out.println("Необходимо:\nгрузовиков - 0 шт." + "\nконтейнеров - 0 шт.");
-            }
     }
 }
+
