@@ -17,35 +17,33 @@ public class Main {
             firstLap = false;
 
             Scanner scanner = new Scanner(System.in);
-            String answer = scanner.nextLine() + " ";
 
-            String command = answer.substring(0, 4).toUpperCase().trim();
-            String idAndValue = answer.substring(command.length()).trim();
-            String value = idAndValue.replaceAll("^[\\d]*","").trim();
-            int id = id(idAndValue.substring(0,idAndValue.lastIndexOf(value)).trim());
+            switch (scanner.nextLine()){
+                case "LIST":
+                    System.out.println("Ваш список дел: " + todoList);
+                    continue;
 
-            if (command.equals("ADD")) {
-                add(id, value);
-            }
+                case "ADD":
+                    System.out.println("Добавить дело в список: ");
+                    todoList.add(scanner.nextLine());
+                    System.out.println("Дело добавлено! " + "номер в списке: " + todoList.size());
+                    continue;
 
-            if (command.equals("EDIT")) {
-                edit(id, value);
-            }
+                case "EDIT":
+                    System.out.println("Заменить дело в списке:");
+                    todoList.set(0, scanner.nextLine());
+                    System.out.println("Дело " + todoList.size() + " заменено на " + todoList.size());
+                    continue;
 
-            if (command.equals("DEL")) {
-                del(id);
-            }
+                case "DELETE":
+                    System.out.println("Удалить дело из списка: ");
+                    todoList.remove(scanner.nextInt() - 1);
+                    System.out.println("Дело удалено!" + todoList.size());
+                    continue;
 
-            if (command.equals("LIST")) {
-                list();
-            }
-
-            if (command.equals("HELP")) {
-                help();
-            }
-
-            if (command.equals("END")||command.equals("EXIT")) {
-                return;
+                default:
+                    System.out.println("Выберем действие: ");
+                    break;
             }
         }
     }
@@ -108,15 +106,8 @@ public class Main {
     }
 
     private static void list() {
-        System.out.println("\nСПИСОК ЗАДАЧ");
-        if (todoList.size() == 0) {
-            System.out.println("Список пуст! Добавьте свою первую задачу командой 'ADD Описание задачи'");
-        }
-        else {
-            for (int i = 0; i < todoList.size(); i++) {
-                System.out.println("Задача " + i + ": " + todoList.get(i));
-            }
-        }
+        TodoList todoList1 = new TodoList();
+        System.out.println(todoList1);
     }
 
     private static void help() {
