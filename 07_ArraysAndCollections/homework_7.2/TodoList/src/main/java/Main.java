@@ -1,9 +1,8 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
-    private static ArrayList<String> todoList = new ArrayList<>();
+    private static TodoList todoList = new TodoList();
 
     public static void main(String[] args) {
         // TODO: написать консольное приложение для работы со списком дел todoList
@@ -12,7 +11,7 @@ public class Main {
 
         for(;;) {
 
-            System.out.println(firstLap ? "Введите команду (для подсказки введите HELP):" :
+            System.out.println(firstLap ? "Введите команду:" :
                     "\nВведите команду, или END для завершения:");
             firstLap = false;
 
@@ -20,103 +19,31 @@ public class Main {
 
             switch (scanner.nextLine()){
                 case "LIST":
-                    System.out.println("Ваш список дел: " + todoList);
+                    todoList.add(0, scanner.nextLine());
+                    System.out.println();
                     continue;
 
                 case "ADD":
-                    System.out.println("Добавить дело в список: ");
                     todoList.add(scanner.nextLine());
-                    System.out.println("Дело добавлено! " + "номер в списке: " + todoList.size());
+                    System.out.println("Добавлено дело " + scanner.nextLine());
                     continue;
 
                 case "EDIT":
                     System.out.println("Заменить дело в списке:");
-                    todoList.set(0, scanner.nextLine());
-                    System.out.println("Дело " + todoList.size() + " заменено на " + todoList.size());
+                    todoList.edit(scanner.nextLine(), 0);
+                    System.out.println("Дело " + scanner.nextLine() + " заменено на " + scanner.nextLine());
                     continue;
 
                 case "DELETE":
                     System.out.println("Удалить дело из списка: ");
-                    todoList.remove(scanner.nextInt() - 1);
-                    System.out.println("Дело удалено!" + todoList.size());
+                    todoList.delete(scanner.nextInt() - 1);
+                    System.out.println("Дело " + scanner.nextLine() + " удалено" );
                     continue;
 
-                default:
-                    System.out.println("Выберем действие: ");
+                case "END":
+                    System.out.println("Работа завершена");
                     break;
             }
         }
-    }
-
-    private static int id(String input) {
-        int id;
-
-        if (input.length() == 0) {
-            id = todoList.size();
-        }
-        else {
-            id = Integer.parseInt(input);
-        }
-        return id;
-    }
-
-    private static boolean idOutOfListSize(int id) {
-        boolean idOutOfListSize = false;
-        if (id > todoList.size()) {
-            idOutOfListSize = true;
-        }
-        return idOutOfListSize;
-    }
-
-    private static void add(int id, String value) {
-        if (idOutOfListSize(id)) {
-            System.out.println("Введен слишком большой номер: " + id +"\nЗадача будет добавлена в конец списка\n");
-            id = todoList.size();
-        }
-        todoList.add(id, value);
-        System.out.println("Задача " + id + " добавлена");
-        list();
-    }
-
-    private static void edit(int id, String value) {
-        if (idOutOfListSize(id)) {
-            System.out.println(todoList.size() == 0 ?
-                    "\"Список пуст! Добавьте свою первую задачу командой 'ADD Описание задачи'\"" :
-                    "\nОШИБКА!\nВведите номер задачи  от 0 до " + (todoList.size() - 1));
-        }
-        else {
-            todoList.remove(id);
-            todoList.add(id, value);
-            System.out.println("Задача " + id + " изменена");
-            list();
-        }
-    }
-
-    private static void del(int id) {
-        if (idOutOfListSize(id)) {
-            System.out.println(todoList.size() == 0 ?
-                    "\"Список пуст! Добавьте свою первую задачу командой 'ADD Описание задачи'\"" :
-                    "\nОШИБКА!\nВведите номер задачи  от 0 до " + (todoList.size() - 1));
-        }
-        else {
-            todoList.remove(id);
-            System.out.println("Задача " + id + " удалена");
-            list();
-        }
-    }
-
-    private static void list() {
-        TodoList todoList1 = new TodoList();
-        System.out.println(todoList1);
-    }
-
-    private static void help() {
-        System.out.println("\nКОМАНДЫ:\n" +
-                "Добавить зазачу:   ADD Номер Описание задачи (номер указывать не обязательно) \n" +
-                "Изменить задачу:   EDIT Номер задачи Обновленное описание задачи \n" +
-                "Удалить задачу:    DEL Номер задачи\n" +
-                "Список задач:      LIST\n" +
-                "Завершение работы: END bkb EXIT"
-        );
     }
 }
