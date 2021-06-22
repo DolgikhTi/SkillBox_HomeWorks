@@ -1,10 +1,9 @@
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
-    private static EmailList email = new EmailList();
+
     public static final String WRONG_EMAIL_ANSWER = "Неверный формат email";
+    private final static String COMMAND_ADD = "ADD";
+    private final static String COMMAND_LIST = "LIST";
     
     /* TODO:
         Пример вывода списка Email, после ввода команды LIST в консоль:
@@ -21,37 +20,16 @@ public class Main {
     */
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            String input = scanner.nextLine();
-            if (input.equals("0")) {
-                break;
-            }
-
-            //TODO: write code here
-            input = input.replaceAll("\\s\\s", " ").trim();
-            Pattern pattern = Pattern.compile("(?i)(^ADD|^LIST|^END)");
-            Matcher matcher = pattern.matcher(input);
-
-            while (matcher.find()) {
-                String command = matcher.group().toUpperCase();
-
-                if (!command.equals("END")) {
-
-                    if (command.equals("ADD")) {
-                        email.add(input);
-                    } else {
-                        System.out.println(WRONG_EMAIL_ANSWER);
-                    }
-
-                    if (command.equals("LIST")) {
-                        email.getSortedEmails();
-                    } else {
-                        return;
-                    }
-                }
-
+        EmailList emailList = new EmailList();
+        for (; ; ) {
+            String userInput = UserInput.getLine();
+            if (userInput.startsWith(COMMAND_ADD)) {
+                emailList.add(userInput.replaceFirst(COMMAND_ADD, "").trim());
+            } else if (userInput.equals(COMMAND_LIST)) {
+                emailList.getSortedEmails();
+            } else {
+                System.out.println(WRONG_EMAIL_ANSWER);
             }
         }
     }

@@ -1,22 +1,15 @@
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EmailList {
 
     TreeSet<String> emails = new TreeSet<>();
+    private static final String REGEX_MAIL = "\\w+@\\w+\\.(ru|com)";
 
     public void add(String email) {
         // TODO: валидный формат email добавляется
-        Pattern pattern = Pattern.compile("\\w+@\\w+\\.(ru|com)");
-        Matcher matcher = pattern.matcher(email.toLowerCase());
-        if (!matcher.find()){
-            emails.clear();
-        } else {
-            emails.add(matcher.group());
+
+        if (email.matches(REGEX_MAIL)){
+            emails.add(email.toLowerCase());
         }
     }
 
