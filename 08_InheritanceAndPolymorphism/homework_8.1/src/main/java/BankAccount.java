@@ -1,15 +1,37 @@
 public class BankAccount {
 
+  private double amount;
+
   public double getAmount() {
-    //TODO: реализуйте метод и удалите todo
-    return 0;
+    return amount;
   }
 
   public void put(double amountToPut) {
-    //TODO: реализуйте метод и удалите todo
+    if (getAmount() > amountToPut){
+      System.out.println("Ошибка!");
+    }else {
+      amount = getAmount() + amountToPut;
+    }
   }
 
   public void take(double amountToTake) {
-    //TODO: реализуйте метод и удалите todo
+    if (getAmount() < amountToTake){
+      System.out.println("недостаточно средств");
+    }else {
+      amount = getAmount() - amountToTake;
+    }
+  }
+
+  public void setAmount(double amount) {
+    this.amount = amount;
+  }
+
+  public boolean send(BankAccount receiver, double amount) {
+    if (this.amount >= amount){
+      this.amount -= amount;
+      receiver.amount += amount;
+      return true;
+    }
+    return false;
   }
 }
