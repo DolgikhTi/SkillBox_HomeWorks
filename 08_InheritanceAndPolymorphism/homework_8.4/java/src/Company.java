@@ -16,7 +16,7 @@ public class Company {
         this.employees.add(employee);
     }
 
-    public static int getIncome() {
+    public int getIncome() {
         return 15000000;
     }
 
