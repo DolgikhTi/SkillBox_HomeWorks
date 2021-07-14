@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,6 +68,15 @@ public class CustomerStorage {
     }
 
     public void removeCustomer(String name) {
+
+        if (!name.contains(" ")) {
+            throw new IllegalArgumentException(
+                    "Ошибка! Введено только имя, или только фамилия, или они не разделены пробелом");
+        }
+        if (!storage.containsKey(name)) {
+            throw new IllegalArgumentException("Ошибка! В базе нет такой записи для удаления");
+        }
+
         storage.remove(name);
     }
 
