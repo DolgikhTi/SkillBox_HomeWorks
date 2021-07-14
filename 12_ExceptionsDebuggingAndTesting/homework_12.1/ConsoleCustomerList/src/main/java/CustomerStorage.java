@@ -69,6 +69,8 @@ public class CustomerStorage {
 
     public void removeCustomer(String name) {
 
+        try {
+
         if (!name.contains(" ")) {
             throw new IllegalArgumentException(
                     "Ошибка! Введено только имя, или только фамилия, или они не разделены пробелом");
@@ -78,6 +80,10 @@ public class CustomerStorage {
         }
 
         storage.remove(name);
+
+        } catch (ArrayIndexOutOfBoundsException ex){
+            System.out.println(ex.getMessage());
+        }
     }
 
     public Customer getCustomer(String name) {
@@ -87,4 +93,5 @@ public class CustomerStorage {
     public int getCount() {
         return storage.size();
     }
+
 }
