@@ -1,5 +1,9 @@
 import core.Line;
 import core.Station;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.Marker;
+import org.apache.logging.log4j.MarkerManager;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,30 +11,53 @@ import org.json.simple.parser.JSONParser;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+    private static Logger logger;
+    private static final Marker SEARCH = MarkerManager.getMarker("SEARCH");
+    private static final Marker INPUT_ERROR = MarkerManager.getMarker("INPUT_ERROR");
+    private static final Marker EXCEPTION = MarkerManager.getMarker("EXCEPTION");
+
     private static final String DATA_FILE = "src/main/resources/map.json";
     private static Scanner scanner;
 
     private static StationIndex stationIndex;
 
     public static void main(String[] args) {
+
+        logger = LogManager.getRootLogger();
+        logger.info("Запуск приложения" );
+
         RouteCalculator calculator = getRouteCalculator();
 
         System.out.println("Программа расчёта маршрутов метрополитена Санкт-Петербурга\n");
-        scanner = new Scanner(System.in);
-        for (; ; ) {
-            Station from = takeStation("Введите станцию отправления:");
-            Station to = takeStation("Введите станцию назначения:");
 
-            List<Station> route = calculator.getShortestRoute(from, to);
-            System.out.println("Маршрут:");
-            printRoute(route);
+        try {
 
-            System.out.println("Длительность: " +
-                    RouteCalculator.calculateDuration(route) + " минут");
+            scanner = new Scanner(System.in);
+            for (; ; ) {
+                Station from = takeStation("Введите станцию отправления:");
+                logger.info(SEARCH, "Станция отправления: " + from.getName());
+
+                Station to = takeStation("Введите станцию назначения:");
+                logger.info(SEARCH, "Станция назначения: " + to.getName());
+
+                List<Station> route = calculator.getShortestRoute(from, to);
+                System.out.println("Маршрут:");
+                logger.info("Проложен маршрут:" );
+                printRoute(route);
+
+                System.out.println("Длительность: " +
+                        RouteCalculator.calculateDuration(route) + " минут");
+                logger.info("Длительность маршрута: " +
+                        RouteCalculator.calculateDuration(route) + " минут");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            logger.error(EXCEPTION, "Ошибка: " + Arrays.toString(ex.getStackTrace()));
         }
     }
 
@@ -48,9 +75,12 @@ public class Main {
                 if (!prevLine.equals(nextLine)) {
                     System.out.println("\tПереход на станцию " +
                             station.getName() + " (" + nextLine.getName() + " линия)");
+                    logger.info("\tПереход на станцию " +
+                            station.getName() + " (" + nextLine.getName() + " линия)");
                 }
             }
             System.out.println("\t" + station.getName());
+            logger.info("\t" + station.getName());
             previousStation = station;
         }
     }
@@ -64,6 +94,7 @@ public class Main {
                 return station;
             }
             System.out.println("Станция не найдена :(");
+            logger.info(INPUT_ERROR, "Станция не найдена: " + line);
         }
     }
 
@@ -82,7 +113,9 @@ public class Main {
             JSONArray connectionsArray = (JSONArray) jsonData.get("connections");
             parseConnections(connectionsArray);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(EXCEPTION, "Ошибка в JSON-файле: \n" +
+                    Arrays.toString(ex.getStackTrace()).replaceAll(",", "\n"));
+            //ex.printStackTrace();
         }
     }
 
@@ -99,8 +132,9 @@ public class Main {
 
                 Station station = stationIndex.getStation(stationName, lineNumber);
                 if (station == null) {
-                    throw new IllegalArgumentException("core.Station " +
-                            stationName + " on line " + lineNumber + " not found");
+                    String errMsg = "Ошибка: core.Station " + stationName + " on line " + lineNumber + " not found";
+                    logger.error(EXCEPTION, errMsg);
+                    throw new IllegalArgumentException(errMsg);
                 }
                 connectionStations.add(station);
             });
@@ -140,7 +174,9 @@ public class Main {
             List<String> lines = Files.readAllLines(Paths.get(DATA_FILE));
             lines.forEach(line -> builder.append(line));
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logger.error(EXCEPTION, "Не найден JSON-файл: " + ex.getMessage() + "\n" +
+                    Arrays.toString(ex.getStackTrace()).replaceAll(",", "\n"));
+            //ex.printStackTrace();
         }
         return builder.toString();
     }
