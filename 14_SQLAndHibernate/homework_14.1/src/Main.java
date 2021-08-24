@@ -24,19 +24,18 @@ public class Main {
                 "FROM PurchaseList GROUP BY course_name, p_date) Grp " +
                 "ON name = course_name " +
                 "ORDER BY name , purchase_month;";
+        try (Connection connection = DriverManager.getConnection(url, user, pass);
 
-        try {
-            Connection connection = DriverManager.getConnection(url, user, pass);
-            Statement statement = connection.createStatement();
+             Statement statement = connection.createStatement();) {
 
             getAvgPurchases(statement, SQL_QUERY_AVG);
+
             getPurchasesPerMonth(statement, SQL_QUERY_MONTH);
 
-            statement.close();
-            connection.close();
-
         } catch (SQLException e) {
+
             e.printStackTrace();
+
         }
     }
 
