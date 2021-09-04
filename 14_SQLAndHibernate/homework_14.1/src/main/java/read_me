@@ -1,0 +1,12 @@
+Напишите код, который выведет среднее количество покупок в месяц для каждого курса за 2018 год. Учитывайте диапазон месяцев, в течение которого были продажи.
+Старайтесь использовать только SQL, при этом  группировку по месяцам можно сделать и с помощью Java.
+
+Если у вас ошибка не назначенного часового пояса.
+ERROR: The server time zone value ‘�й���׼ʱ��’ is unrecognized or represents more than one time zone. 
+You must configure either the server or JDBC driver (via the serverTimezone configuration property) to use a more specific time zone value if you want to utilize time zone support.
+
+Решение:
+Добавьте в вашу строку соединения с базой данных параметр, указывающий часовой пояс, serverTimezone=UTC или укажите конкретный часовой пояс, например serverTimezone=Europe/Moscow.
+
+Ваша строка будет выглядеть так:
+jdbc:mysql://localhost:3306/skillbox?useSSL=false&serverTimezone=UTC
